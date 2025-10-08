@@ -58,6 +58,7 @@ export async function getQuote(symbol) {
   
   return {
     symbol: symbolUpper,
+    description: config.description,
     price: parseFloat(currentPrice.toFixed(2)),
     change: parseFloat(change.toFixed(2)),
     changePercent: parseFloat(changePercent.toFixed(2)),

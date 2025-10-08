@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Star } from 'lucide-react';
 import SearchBar from '../components/SearchBar';
 import Chart from '../components/Chart';
 import TimeframeSelector from '../components/TimeframeSelector';
@@ -7,11 +8,15 @@ import QuotePanel from '../components/QuotePanel';
 import MarketSelector from '../components/MarketSelector';
 import { getQuote } from '../services/api';
 
+const MAX_WATCHLIST_ITEMS = 50;
+
 function Dashboard({ 
   selectedMarket, 
   setSelectedMarket, 
   selectedSymbol, 
-  setSelectedSymbol 
+  setSelectedSymbol,
+  watchlist,
+  setWatchlist
 }) {
   const [timeframe, setTimeframe] = useState('1d');
   const [quote, setQuote] = useState(null);
@@ -55,6 +60,22 @@ function Dashboard({
     }));
   };
 
+  const isInWatchlist = watchlist.some(item => item.symbol === selectedSymbol);
+
+  const toggleWatchlist = () => {
+    if (isInWatchlist) {
+      // Quitar de favoritos
+      setWatchlist(watchlist.filter(item => item.symbol !== selectedSymbol));
+    } else {
+      // Agregar a favoritos
+      if (watchlist.length >= MAX_WATCHLIST_ITEMS) {
+        alert(`Has alcanzado el límite de ${MAX_WATCHLIST_ITEMS} activos en favoritos`);
+        return;
+      }
+      setWatchlist([...watchlist, { symbol: selectedSymbol, category: selectedMarket }]);
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-6">
       {/* Top Controls */}
@@ -77,7 +98,13 @@ function Dashboard({
       </div>
 
       {/* Quote Info */}
-      {quote && <QuotePanel quote={quote} />}
+      {quote && (
+        <QuotePanel 
+          quote={quote} 
+          isInWatchlist={isInWatchlist}
+          onToggleWatchlist={toggleWatchlist}
+        />
+      )}
 
       {/* Main Chart Area */}
       <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 mt-6">

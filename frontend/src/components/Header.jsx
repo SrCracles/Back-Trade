@@ -1,4 +1,4 @@
-import { TrendingUp, ShoppingCart, TrendingDown, Wallet, LayoutDashboard } from 'lucide-react'
+import { TrendingUp, ShoppingCart, TrendingDown, Wallet, LayoutDashboard, Star } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 
 function Header({ onOpenBuy, onOpenSell, balance }) {
@@ -31,6 +31,20 @@ function Header({ onOpenBuy, onOpenSell, balance }) {
               >
                 <LayoutDashboard className="w-4 h-4" />
                 <span>Trading</span>
+              </NavLink>
+
+              <NavLink
+                to="/watchlist"
+                className={({ isActive }) =>
+                  `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
+                    isActive
+                      ? 'bg-accent-blue text-white'
+                      : 'text-gray-400 hover:text-white hover:bg-dark-700'
+                  }`
+                }
+              >
+                <Star className="w-4 h-4" />
+                <span>Seguimiento</span>
               </NavLink>
 
               <NavLink

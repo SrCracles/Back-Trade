@@ -35,7 +35,5 @@ echo 1. Ejecuta start-backend.bat en una terminal
 echo 2. Ejecuta start-frontend.bat en otra terminal
 echo 3. Abre http://localhost:3000 en tu navegador
 echo.
-echo La aplicacion usa datos simulados (no requiere API keys)
-echo.
 pause
 

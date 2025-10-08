@@ -4,7 +4,21 @@ import Header from './components/Header'
 import TradingModal from './components/TradingModal'
 import Dashboard from './pages/Dashboard'
 import Portfolio from './pages/Portfolio'
+import Watchlist from './pages/Watchlist'
 import { getQuote } from './services/api'
+
+const INITIAL_WATCHLIST = [
+  { symbol: 'BTC', category: 'crypto' },
+  { symbol: 'ETH', category: 'crypto' },
+  { symbol: 'AAPL', category: 'us-stocks' },
+  { symbol: 'TSLA', category: 'us-stocks' },
+  { symbol: 'EURUSD', category: 'forex' },
+  { symbol: 'GBPUSD', category: 'forex' },
+  { symbol: 'MSFT', category: 'us-stocks' },
+  { symbol: 'GOOGL', category: 'us-stocks' },
+  { symbol: 'SOL', category: 'crypto' },
+  { symbol: 'ECOPETROL', category: 'colombia-stocks' }
+];
 
 function App() {
   const [selectedMarket, setSelectedMarket] = useState('crypto');
@@ -15,6 +29,7 @@ function App() {
     { symbol: 'BTC', quantity: 1, avgPrice: 43000, currentPrice: 45250 },
     { symbol: 'TSLA', quantity: 5, avgPrice: 235, currentPrice: 242.50 }
   ]);
+  const [watchlist, setWatchlist] = useState(INITIAL_WATCHLIST);
 
   useEffect(() => {
     updateHoldingsPrices();
@@ -144,6 +159,18 @@ function App() {
                   setSelectedMarket={setSelectedMarket}
                   selectedSymbol={selectedSymbol}
                   setSelectedSymbol={setSelectedSymbol}
+                  watchlist={watchlist}
+                  setWatchlist={setWatchlist}
+                />
+              } 
+            />
+            <Route 
+              path="/watchlist" 
+              element={
+                <Watchlist
+                  watchlist={watchlist}
+                  setWatchlist={setWatchlist}
+                  onSelectSymbol={handleSelectSymbolFromPortfolio}
                 />
               } 
             />

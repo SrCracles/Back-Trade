@@ -1,6 +1,6 @@
-import { TrendingUp, TrendingDown } from 'lucide-react'
+import { TrendingUp, TrendingDown, Star } from 'lucide-react'
 
-function QuotePanel({ quote }) {
+function QuotePanel({ quote, isInWatchlist, onToggleWatchlist }) {
   const isPositive = quote.change >= 0;
   const changeColor = isPositive ? 'text-accent-green' : 'text-accent-red';
   const TrendIcon = isPositive ? TrendingUp : TrendingDown;
@@ -9,7 +9,23 @@ function QuotePanel({ quote }) {
     <div className="bg-dark-800 border border-dark-600 rounded-lg p-6 shadow-lg">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold text-white">{quote.symbol}</h2>
+          <div className="flex items-center space-x-3">
+            <h2 className="text-3xl font-bold text-white">{quote.symbol}</h2>
+            <button
+              onClick={onToggleWatchlist}
+              className={`p-2 rounded-lg transition-all ${
+                isInWatchlist
+                  ? 'text-yellow-400 hover:bg-yellow-500/20'
+                  : 'text-gray-500 hover:text-yellow-400 hover:bg-yellow-500/10'
+              }`}
+              title={isInWatchlist ? 'Quitar de favoritos' : 'Agregar a favoritos'}
+            >
+              <Star className={`w-6 h-6 ${isInWatchlist ? 'fill-yellow-400' : ''}`} />
+            </button>
+          </div>
+          {quote.description && (
+            <p className="text-sm text-gray-400 mt-1">{quote.description}</p>
+          )}
           <p className="text-4xl font-bold text-white mt-2">
             ${quote.price?.toFixed(2) || '---'}
           </p>

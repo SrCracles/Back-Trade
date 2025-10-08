@@ -136,9 +136,14 @@ export function getAllSymbols() {
 export function getSymbolPrice(symbol) {
   for (const market of Object.values(MARKETS)) {
     if (market.prices[symbol]) {
-      return market.prices[symbol];
+      // Buscar también la descripción del símbolo
+      const symbolInfo = market.symbols.find(s => s.symbol === symbol);
+      return {
+        ...market.prices[symbol],
+        description: symbolInfo?.description || symbol
+      };
     }
   }
-  return { base: 100, volatility: 0.02 };
+  return { base: 100, volatility: 0.02, description: symbol };
 }
 
