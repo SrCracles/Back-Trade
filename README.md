@@ -44,10 +44,6 @@ http://localhost:3000
 - P&L por posición y total
 - Click en posición para operar
 
-## Datos
-
-Sistema completamente simulado, no requiere APIs externas ni configuración.
-
 ## Stack
 
 **Backend**: Node.js + Express  
