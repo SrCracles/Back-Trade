@@ -1,74 +1,58 @@
 # BackTrade - Trading Analytics Platform
 
-Plataforma de análisis de trading diseñada para ayudar a traders principiantes a optimizar su proceso de aprendizaje.
+Plataforma de análisis de trading para ayudar a traders principiantes a optimizar su proceso de aprendizaje.
 
 ## Inicio Rápido
 
 ### 1. Instalar Dependencias
-
 ```bash
-# Instalar todo automáticamente
 install.bat
-
-# O manualmente:
-cd backend && npm install
-cd frontend && npm install
 ```
 
 ### 2. Ejecutar
-
 ```bash
-# Iniciar backend (una ventana)
+# Terminal 1: Backend
 start-backend.bat
 
-# Iniciar frontend (otra ventana)
+# Terminal 2: Frontend
 start-frontend.bat
 ```
 
-### 3. Abrir en el navegador
-
+### 3. Abrir navegador
 ```
 http://localhost:3000
 ```
 
-## Características
+## Funcionalidades
 
-### Análisis de Mercado
-- Gráficos interactivos en tiempo real
-- Múltiples timeframes (1m, 5m, 15m, 1h, 1d, 1w)
+### Trading
+- Gráficos interactivos con múltiples timeframes (1m, 5m, 15m, 1h, 1d, 1w)
 - Indicadores técnicos (RSI, MACD, SMA, EMA)
-- 4 mercados disponibles (EE.UU., Colombia, Cripto, Forex)
+- 4 mercados: Acciones EE.UU., Acciones Colombia, Criptomonedas, Forex
+- Compra/venta simulada con balance inicial de $2000
+- Sistema de favoritos con estrella
 
-### Trading (Prototipo)
-- Compra y venta de acciones simulada
-- Conexión con brokers externos
-- Advertencias de redirección
-- Sistema de consentimiento
-- Datos simulados realistas
-- Sin necesidad de configuración
+### Lista de Seguimiento
+- Hasta 50 activos favoritos
+- Filtrado por categoría
+- Precios en tiempo real (simulados)
+- Agregar/quitar favoritos desde el gráfico
 
-## Símbolos Disponibles
+### Portafolio
+- Visualización de holdings (1 BTC y 5 TSLA por defecto)
+- Balance disponible
+- P&L por posición y total
+- Click en posición para operar
 
-AAPL, MSFT, GOOGL, AMZN, TSLA, META, NVDA, SPY, QQQ, BTC-USD, JPM, V, WMT, DIS, NFLX
+## Datos
 
-## Stack Tecnológico
+Sistema completamente simulado, no requiere APIs externas ni configuración.
 
-**Backend**: Node.js + Express
-**Frontend**: React + Vite + TailwindCSS
+## Stack
+
+**Backend**: Node.js + Express  
+**Frontend**: React + Vite + TailwindCSS + React Router  
 **Gráficos**: Lightweight Charts
-
-## Estructura
-
-```
-Back-Trade/
-├── backend/      # API Node.js
-├── frontend/     # React App
-└── README.md     # Este archivo
-```
-
-## Tema
-
-Interfaz oscura profesional optimizada para análisis de trading.
 
 ---
 
