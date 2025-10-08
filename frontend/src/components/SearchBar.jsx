@@ -2,12 +2,21 @@ import { useState, useEffect, useRef } from 'react'
 import { Search } from 'lucide-react'
 import { searchSymbols } from '../services/api'
 
-function SearchBar({ onSymbolSelect, currentSymbol }) {
+const MARKET_PLACEHOLDERS = {
+  'us-stocks': 'Buscar símbolo (ej: AAPL, MSFT, TSLA...)',
+  'colombia-stocks': 'Buscar símbolo (ej: ECOPETROL, BANCOLOMBIA, GRUPOSURA...)',
+  'crypto': 'Buscar símbolo (ej: BTC, ETH, BNB, SOL...)',
+  'forex': 'Buscar símbolo (ej: EURUSD, GBPUSD, USDJPY...)'
+};
+
+function SearchBar({ onSymbolSelect, currentSymbol, market }) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const dropdownRef = useRef(null);
+  
+  const placeholder = MARKET_PLACEHOLDERS[market] || MARKET_PLACEHOLDERS['us-stocks'];
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -35,7 +44,7 @@ function SearchBar({ onSymbolSelect, currentSymbol }) {
   const handleSearch = async () => {
     setLoading(true);
     try {
-      const data = await searchSymbols(query);
+      const data = await searchSymbols(query, market);
       setResults(data);
       setIsOpen(true);
     } catch (error) {
@@ -61,7 +70,7 @@ function SearchBar({ onSymbolSelect, currentSymbol }) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => query && setIsOpen(true)}
-          placeholder="Buscar símbolo (ej: AAPL, MSFT, TSLA...)"
+          placeholder={placeholder}
           className="w-full bg-dark-800 border border-dark-600 rounded-lg py-3 pl-10 pr-4 text-white placeholder-gray-500 focus:outline-none focus:border-accent-blue focus:ring-2 focus:ring-accent-blue/20 transition-all"
         />
         {currentSymbol && !query && (

@@ -1,24 +1,6 @@
 // Market Data Service - Solo datos simulados
 import { calculateRSI, calculateMACD, calculateSMA, calculateEMA } from '../utils/indicators.js';
-
-// Base de precios realistas para diferentes símbolos
-const MOCK_PRICES = {
-  'AAPL': { base: 175.50, volatility: 0.02, name: 'Apple Inc.' },
-  'MSFT': { base: 380.25, volatility: 0.018, name: 'Microsoft Corporation' },
-  'GOOGL': { base: 142.80, volatility: 0.022, name: 'Alphabet Inc.' },
-  'AMZN': { base: 155.30, volatility: 0.025, name: 'Amazon.com Inc.' },
-  'TSLA': { base: 242.50, volatility: 0.04, name: 'Tesla Inc.' },
-  'META': { base: 485.60, volatility: 0.028, name: 'Meta Platforms Inc.' },
-  'NVDA': { base: 495.75, volatility: 0.035, name: 'NVIDIA Corporation' },
-  'SPY': { base: 455.20, volatility: 0.012, name: 'SPDR S&P 500 ETF' },
-  'QQQ': { base: 395.80, volatility: 0.015, name: 'Invesco QQQ Trust' },
-  'BTC-USD': { base: 45250, volatility: 0.05, name: 'Bitcoin USD' },
-  'JPM': { base: 152.30, volatility: 0.02, name: 'JPMorgan Chase & Co.' },
-  'V': { base: 258.90, volatility: 0.019, name: 'Visa Inc.' },
-  'WMT': { base: 165.40, volatility: 0.015, name: 'Walmart Inc.' },
-  'DIS': { base: 92.50, volatility: 0.025, name: 'The Walt Disney Company' },
-  'NFLX': { base: 485.30, volatility: 0.032, name: 'Netflix Inc.' }
-};
+import { getSymbolPrice } from '../data/markets.js';
 
 // Generar precio aleatorio con volatilidad
 function generatePrice(basePrice, volatility) {
@@ -65,7 +47,7 @@ export async function getQuote(symbol) {
   console.log(`[MOCK] Generating quote for ${symbol}`);
   
   const symbolUpper = symbol.toUpperCase();
-  const config = MOCK_PRICES[symbolUpper] || MOCK_PRICES['AAPL'];
+  const config = getSymbolPrice(symbolUpper);
   
   const previousClose = config.base;
   const currentPrice = generatePrice(previousClose, config.volatility * 0.3);
@@ -92,7 +74,7 @@ export async function getHistoricalData(symbol, timeframe) {
   console.log(`[MOCK] Generating historical data for ${symbol} (${timeframe})`);
   
   const symbolUpper = symbol.toUpperCase();
-  const config = MOCK_PRICES[symbolUpper] || MOCK_PRICES['AAPL'];
+  const config = getSymbolPrice(symbolUpper);
   
   const barCounts = {
     '1m': 200,   // Más datos para ver indicadores completos

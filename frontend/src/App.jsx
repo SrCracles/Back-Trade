@@ -5,9 +5,11 @@ import Chart from './components/Chart'
 import TimeframeSelector from './components/TimeframeSelector'
 import IndicatorPanel from './components/IndicatorPanel'
 import QuotePanel from './components/QuotePanel'
+import MarketSelector from './components/MarketSelector'
 import { searchSymbols, getQuote } from './services/api'
 
 function App() {
+  const [selectedMarket, setSelectedMarket] = useState('us-stocks');
   const [selectedSymbol, setSelectedSymbol] = useState('AAPL');
   const [timeframe, setTimeframe] = useState('1d');
   const [quote, setQuote] = useState(null);
@@ -23,6 +25,18 @@ function App() {
   useEffect(() => {
     loadQuote();
   }, [selectedSymbol]);
+
+  const handleMarketChange = (market) => {
+    setSelectedMarket(market);
+    // Cambiar al primer símbolo del nuevo mercado
+    const defaultSymbols = {
+      'us-stocks': 'AAPL',
+      'colombia-stocks': 'ECOPETROL',
+      'crypto': 'BTC',
+      'forex': 'EURUSD'
+    };
+    setSelectedSymbol(defaultSymbols[market]);
+  };
 
   const loadQuote = async () => {
     try {
@@ -47,10 +61,15 @@ function App() {
       <main className="container mx-auto px-4 py-6">
         {/* Top Controls */}
         <div className="flex flex-col lg:flex-row gap-4 mb-6">
+          <MarketSelector 
+            selected={selectedMarket}
+            onSelect={handleMarketChange}
+          />
           <div className="flex-1">
             <SearchBar 
               onSymbolSelect={setSelectedSymbol}
               currentSymbol={selectedSymbol}
+              market={selectedMarket}
             />
           </div>
           <TimeframeSelector 

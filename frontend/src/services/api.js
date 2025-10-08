@@ -7,10 +7,10 @@ const api = axios.create({
   timeout: 10000,
 });
 
-export const searchSymbols = async (query) => {
+export const searchSymbols = async (query, market = 'us-stocks') => {
   try {
     const response = await api.get('/search/symbols', {
-      params: { query }
+      params: { query, market }
     });
     return response.data;
   } catch (error) {
