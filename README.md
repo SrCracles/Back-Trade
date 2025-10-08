@@ -33,10 +33,17 @@ http://localhost:3000
 
 ## Características
 
+### Análisis de Mercado
 - Gráficos interactivos en tiempo real
 - Múltiples timeframes (1m, 5m, 15m, 1h, 1d, 1w)
 - Indicadores técnicos (RSI, MACD, SMA, EMA)
-- Búsqueda de símbolos
+- 4 mercados disponibles (EE.UU., Colombia, Cripto, Forex)
+
+### Trading (Prototipo)
+- Compra y venta de acciones simulada
+- Conexión con brokers externos
+- Advertencias de redirección
+- Sistema de consentimiento
 - Datos simulados realistas
 - Sin necesidad de configuración
 

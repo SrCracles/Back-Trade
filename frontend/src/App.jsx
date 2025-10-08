@@ -1,105 +1,166 @@
 import { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
-import SearchBar from './components/SearchBar'
-import Chart from './components/Chart'
-import TimeframeSelector from './components/TimeframeSelector'
-import IndicatorPanel from './components/IndicatorPanel'
-import QuotePanel from './components/QuotePanel'
-import MarketSelector from './components/MarketSelector'
-import { searchSymbols, getQuote } from './services/api'
+import TradingModal from './components/TradingModal'
+import Dashboard from './pages/Dashboard'
+import Portfolio from './pages/Portfolio'
+import { getQuote } from './services/api'
 
 function App() {
-  const [selectedMarket, setSelectedMarket] = useState('us-stocks');
-  const [selectedSymbol, setSelectedSymbol] = useState('AAPL');
-  const [timeframe, setTimeframe] = useState('1d');
-  const [quote, setQuote] = useState(null);
-  const [activeIndicators, setActiveIndicators] = useState({
-    sma20: true,
-    sma50: true,
-    ema12: false,
-    ema26: false,
-    rsi: true,
-    macd: true
-  });
+  const [selectedMarket, setSelectedMarket] = useState('crypto');
+  const [selectedSymbol, setSelectedSymbol] = useState('BTC');
+  const [tradingModal, setTradingModal] = useState({ isOpen: false, mode: null });
+  const [balance, setBalance] = useState(2000);
+  const [holdings, setHoldings] = useState([
+    { symbol: 'BTC', quantity: 1, avgPrice: 43000, currentPrice: 45250 },
+    { symbol: 'TSLA', quantity: 5, avgPrice: 235, currentPrice: 242.50 }
+  ]);
 
   useEffect(() => {
-    loadQuote();
+    updateHoldingsPrices();
   }, [selectedSymbol]);
 
-  const handleMarketChange = (market) => {
-    setSelectedMarket(market);
-    // Cambiar al primer símbolo del nuevo mercado
-    const defaultSymbols = {
-      'us-stocks': 'AAPL',
-      'colombia-stocks': 'ECOPETROL',
-      'crypto': 'BTC',
-      'forex': 'EURUSD'
-    };
-    setSelectedSymbol(defaultSymbols[market]);
+  const updateHoldingsPrices = async () => {
+    // Actualizar precios actuales de holdings
+    const updatedHoldings = await Promise.all(
+      holdings.map(async (holding) => {
+        try {
+          const quoteData = await getQuote(holding.symbol);
+          return { ...holding, currentPrice: quoteData.price };
+        } catch (error) {
+          return holding;
+        }
+      })
+    );
+    setHoldings(updatedHoldings);
   };
 
-  const loadQuote = async () => {
-    try {
-      const data = await getQuote(selectedSymbol);
-      setQuote(data);
-    } catch (error) {
-      console.error('Error loading quote:', error);
+  const handleTrade = (trade) => {
+    if (trade.mode === 'buy') {
+      // Comprar
+      if (trade.totalCost > balance) {
+        alert('Fondos insuficientes');
+        return;
+      }
+
+      setBalance(prev => prev - trade.totalCost);
+      
+      const existingHolding = holdings.find(h => h.symbol === trade.symbol);
+      if (existingHolding) {
+        // Actualizar holding existente
+        setHoldings(prev => prev.map(h => 
+          h.symbol === trade.symbol
+            ? {
+                ...h,
+                quantity: h.quantity + trade.quantity,
+                avgPrice: ((h.avgPrice * h.quantity) + (trade.price * trade.quantity)) / (h.quantity + trade.quantity),
+                currentPrice: trade.price
+              }
+            : h
+        ));
+      } else {
+        // Crear nuevo holding
+        setHoldings(prev => [...prev, {
+          symbol: trade.symbol,
+          quantity: trade.quantity,
+          avgPrice: trade.price,
+          currentPrice: trade.price
+        }]);
+      }
+
+      alert(`Compra exitosa!\n${trade.quantity.toFixed(4)} ${trade.symbol} por $${trade.totalCost.toFixed(2)}`);
+    } else {
+      // Vender
+      const holding = holdings.find(h => h.symbol === trade.symbol);
+      if (!holding || holding.quantity < trade.quantity) {
+        alert('No tienes suficientes unidades para vender');
+        return;
+      }
+
+      setBalance(prev => prev + trade.totalCost);
+      
+      if (holding.quantity === trade.quantity) {
+        // Eliminar holding si se vende todo
+        setHoldings(prev => prev.filter(h => h.symbol !== trade.symbol));
+      } else {
+        // Reducir cantidad
+        setHoldings(prev => prev.map(h =>
+          h.symbol === trade.symbol
+            ? { ...h, quantity: h.quantity - trade.quantity, currentPrice: trade.price }
+            : h
+        ));
+      }
+
+      alert(`Venta exitosa!\n${trade.quantity.toFixed(4)} ${trade.symbol} por $${trade.totalCost.toFixed(2)}`);
     }
   };
 
-  const toggleIndicator = (indicator) => {
-    setActiveIndicators(prev => ({
-      ...prev,
-      [indicator]: !prev[indicator]
-    }));
+  const handleSelectSymbolFromPortfolio = (symbol) => {
+    // Determinar el mercado del símbolo
+    const marketMap = {
+      'BTC': 'crypto',
+      'ETH': 'crypto',
+      'BNB': 'crypto',
+      'TSLA': 'us-stocks',
+      'AAPL': 'us-stocks',
+      'MSFT': 'us-stocks',
+      'ECOPETROL': 'colombia-stocks',
+      'BANCOLOMBIA': 'colombia-stocks',
+      'EURUSD': 'forex',
+      'GBPUSD': 'forex'
+    };
+
+    const market = marketMap[symbol] || 'us-stocks';
+    setSelectedMarket(market);
+    setSelectedSymbol(symbol);
   };
 
   return (
-    <div className="min-h-screen bg-dark-900">
-      <Header />
-      
-      <main className="container mx-auto px-4 py-6">
-        {/* Top Controls */}
-        <div className="flex flex-col lg:flex-row gap-4 mb-6">
-          <MarketSelector 
-            selected={selectedMarket}
-            onSelect={handleMarketChange}
-          />
-          <div className="flex-1">
-            <SearchBar 
-              onSymbolSelect={setSelectedSymbol}
-              currentSymbol={selectedSymbol}
-              market={selectedMarket}
+    <Router>
+      <div className="min-h-screen bg-dark-900">
+        <Header 
+          onOpenBuy={() => setTradingModal({ isOpen: true, mode: 'buy' })}
+          onOpenSell={() => setTradingModal({ isOpen: true, mode: 'sell' })}
+          balance={balance}
+        />
+        
+        <TradingModal
+          isOpen={tradingModal.isOpen}
+          onClose={() => setTradingModal({ isOpen: false, mode: null })}
+          mode={tradingModal.mode}
+          currentSymbol={selectedSymbol}
+          balance={balance}
+          holdings={holdings}
+          onTrade={handleTrade}
+        />
+        
+        <main>
+          <Routes>
+            <Route 
+              path="/" 
+              element={
+                <Dashboard
+                  selectedMarket={selectedMarket}
+                  setSelectedMarket={setSelectedMarket}
+                  selectedSymbol={selectedSymbol}
+                  setSelectedSymbol={setSelectedSymbol}
+                />
+              } 
             />
-          </div>
-          <TimeframeSelector 
-            selected={timeframe}
-            onSelect={setTimeframe}
-          />
-        </div>
-
-        {/* Quote Info */}
-        {quote && <QuotePanel quote={quote} />}
-
-        {/* Main Chart Area */}
-        <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 mt-6">
-          <div className="xl:col-span-3">
-            <Chart 
-              symbol={selectedSymbol}
-              timeframe={timeframe}
-              activeIndicators={activeIndicators}
+            <Route 
+              path="/portfolio" 
+              element={
+                <Portfolio
+                  balance={balance}
+                  holdings={holdings}
+                  onSelectSymbol={handleSelectSymbolFromPortfolio}
+                />
+              } 
             />
-          </div>
-          
-          <div className="xl:col-span-1">
-            <IndicatorPanel 
-              activeIndicators={activeIndicators}
-              onToggle={toggleIndicator}
-            />
-          </div>
-        </div>
-      </main>
-    </div>
+          </Routes>
+        </main>
+      </div>
+    </Router>
   )
 }
 
