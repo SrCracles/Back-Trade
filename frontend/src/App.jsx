@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { PsychologicalTrackingProvider } from './contexts/PsychologicalTrackingContext'
 import Header from './components/Header'
 import TradingModal from './components/TradingModal'
+import EmotionalPopup from './components/EmotionalPopup'
+import RiskAlert from './components/RiskAlert'
 import Dashboard from './pages/Dashboard'
 import Portfolio from './pages/Portfolio'
 import Watchlist from './pages/Watchlist'
+import Report from './pages/Report'
 import { getQuote } from './services/api'
 
 const INITIAL_WATCHLIST = [
@@ -132,61 +136,70 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-dark-900">
-        <Header 
-          onOpenBuy={() => setTradingModal({ isOpen: true, mode: 'buy' })}
-          onOpenSell={() => setTradingModal({ isOpen: true, mode: 'sell' })}
-          balance={balance}
-        />
-        
-        <TradingModal
-          isOpen={tradingModal.isOpen}
-          onClose={() => setTradingModal({ isOpen: false, mode: null })}
-          mode={tradingModal.mode}
-          currentSymbol={selectedSymbol}
-          balance={balance}
-          holdings={holdings}
-          onTrade={handleTrade}
-        />
-        
-        <main>
-          <Routes>
-            <Route 
-              path="/" 
-              element={
-                <Dashboard
-                  selectedMarket={selectedMarket}
-                  setSelectedMarket={setSelectedMarket}
-                  selectedSymbol={selectedSymbol}
-                  setSelectedSymbol={setSelectedSymbol}
-                  watchlist={watchlist}
-                  setWatchlist={setWatchlist}
-                />
-              } 
-            />
-            <Route 
-              path="/watchlist" 
-              element={
-                <Watchlist
-                  watchlist={watchlist}
-                  setWatchlist={setWatchlist}
-                  onSelectSymbol={handleSelectSymbolFromPortfolio}
-                />
-              } 
-            />
-            <Route 
-              path="/portfolio" 
-              element={
-                <Portfolio
-                  balance={balance}
-                  holdings={holdings}
-                  onSelectSymbol={handleSelectSymbolFromPortfolio}
-                />
-              } 
-            />
-          </Routes>
-        </main>
-      </div>
+      <PsychologicalTrackingProvider>
+        <div className="min-h-screen bg-dark-900">
+          <Header 
+            onOpenBuy={() => setTradingModal({ isOpen: true, mode: 'buy' })}
+            onOpenSell={() => setTradingModal({ isOpen: true, mode: 'sell' })}
+            balance={balance}
+          />
+          
+          <TradingModal
+            isOpen={tradingModal.isOpen}
+            onClose={() => setTradingModal({ isOpen: false, mode: null })}
+            mode={tradingModal.mode}
+            currentSymbol={selectedSymbol}
+            balance={balance}
+            holdings={holdings}
+            onTrade={handleTrade}
+          />
+
+          <EmotionalPopup />
+          <RiskAlert />
+          
+          <main>
+            <Routes>
+              <Route 
+                path="/" 
+                element={
+                  <Dashboard
+                    selectedMarket={selectedMarket}
+                    setSelectedMarket={setSelectedMarket}
+                    selectedSymbol={selectedSymbol}
+                    setSelectedSymbol={setSelectedSymbol}
+                    watchlist={watchlist}
+                    setWatchlist={setWatchlist}
+                  />
+                } 
+              />
+              <Route 
+                path="/watchlist" 
+                element={
+                  <Watchlist
+                    watchlist={watchlist}
+                    setWatchlist={setWatchlist}
+                    onSelectSymbol={handleSelectSymbolFromPortfolio}
+                  />
+                } 
+              />
+              <Route 
+                path="/portfolio" 
+                element={
+                  <Portfolio
+                    balance={balance}
+                    holdings={holdings}
+                    onSelectSymbol={handleSelectSymbolFromPortfolio}
+                  />
+                } 
+              />
+              <Route 
+                path="/report" 
+                element={<Report />} 
+              />
+            </Routes>
+          </main>
+        </div>
+      </PsychologicalTrackingProvider>
     </Router>
   )
 }

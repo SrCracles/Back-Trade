@@ -44,6 +44,13 @@ http://localhost:3000
 - P&L por posición y total
 - Click en posición para operar
 
+### Seguimiento Psicológico
+- Registro automático de sesiones
+- Pop-ups de evaluación emocional (estrés, confianza, fatiga)
+- Alertas de comportamiento de riesgo en tiempo real
+- Informe psicológico con análisis y recomendaciones
+- Correlación entre estados emocionales y operaciones
+
 ## Stack
 
 **Backend**: Node.js + Express  

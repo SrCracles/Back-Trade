@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import { X, ShoppingCart, TrendingUp, DollarSign } from 'lucide-react'
 import { getQuote } from '../services/api'
+import { usePsychologicalTracking } from '../contexts/PsychologicalTrackingContext'
 
 function TradingModal({ isOpen, onClose, mode, currentSymbol, balance, holdings, onTrade }) {
+  const { registerTrade } = usePsychologicalTracking()
   const [amountUSD, setAmountUSD] = useState(100);
   const [quote, setQuote] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -53,13 +55,19 @@ function TradingModal({ isOpen, onClose, mode, currentSymbol, balance, holdings,
     const quantity = getQuantity();
     const totalCost = amountUSD;
     
-    onTrade({
+    const tradeData = {
       mode,
       symbol: currentSymbol,
       quantity,
       price: quote.price,
       totalCost
-    });
+    };
+    
+    // Register trade in psychological tracking
+    registerTrade(tradeData);
+    
+    // Execute trade in parent
+    onTrade(tradeData);
     
     onClose();
   };
