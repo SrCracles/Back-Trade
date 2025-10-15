@@ -1,4 +1,4 @@
-# BackTrade - Trading Analytics Platform
+# Trading Sinergico - Trading Analytics Platform
 
 Plataforma de análisis de trading para ayudar a traders principiantes a optimizar su proceso de aprendizaje.
 
