@@ -5,7 +5,7 @@ const FAQ_DATA = [
     category: 'General',
     questions: [
       { q: '¿Qué es el trading?', a: 'El trading es la compra y venta de activos financieros con el objetivo de obtener beneficios.' },
-      { q: '¿Qué mercados puedo operar en BackTrade?', a: 'Puedes operar acciones de EE.UU., Colombia, criptomonedas y divisas (Forex).' },
+      { q: '¿Qué mercados puedo operar en Trading Sinérgico?', a: 'Puedes operar acciones de EE.UU., Colombia, criptomonedas y divisas (Forex).' },
       { q: '¿Qué es un portafolio?', a: 'Es el conjunto de activos financieros que posee un inversor.' },
       { q: '¿Cómo puedo ver mi balance?', a: 'Tu balance se muestra en la parte superior derecha de la aplicación.' },
     ]
