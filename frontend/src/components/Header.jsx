@@ -74,6 +74,33 @@ function Header({ onOpenBuy, onOpenSell, balance }) {
                 <Brain className="w-4 h-4" />
                 <span>Informe</span>
               </NavLink>
+
+              <NavLink
+                to="/chat"
+                className={({ isActive }) =>
+                  `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
+                    isActive
+                      ? 'bg-accent-green text-white'
+                      : 'text-gray-400 hover:text-white hover:bg-dark-700'
+                  }`
+                }
+              >
+                <span role="img" aria-label="chat">💬</span>
+                <span>Chat</span>
+              </NavLink>
+              <NavLink
+                to="/faq"
+                className={({ isActive }) =>
+                  `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
+                    isActive
+                      ? 'bg-accent-purple text-white'
+                      : 'text-gray-400 hover:text-white hover:bg-dark-700'
+                  }`
+                }
+              >
+                <span role="img" aria-label="faq">❓</span>
+                <span>FAQ</span>
+              </NavLink>
             </nav>
           </div>
           
