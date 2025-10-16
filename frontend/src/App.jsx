@@ -11,6 +11,9 @@ import Watchlist from './pages/Watchlist'
 import Report from './pages/Report'
 import FAQ from './pages/FAQ'
 import Chat from './pages/Chat'
+import Groups from './pages/Groups'
+import Alerts from './pages/Alerts'
+import Funding from './pages/Funding'
 import { getQuote } from './services/api'
 
 const INITIAL_WATCHLIST = [
@@ -205,6 +208,18 @@ function App() {
               <Route 
                 path="/chat" 
                 element={<Chat />} 
+              />
+              <Route 
+                path="/groups" 
+                element={<Groups />} 
+              />
+              <Route 
+                path="/alerts" 
+                element={<Alerts />} 
+              />
+              <Route 
+                path="/funding" 
+                element={<Funding />} 
               />
             </Routes>
           </main>

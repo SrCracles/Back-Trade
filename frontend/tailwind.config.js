@@ -18,6 +18,8 @@ export default {
           green: '#10b981',
           red: '#ef4444',
           purple: '#8b5cf6',
+          orange: '#f97316',
+          yellow: '#eab308',
         }
       }
     },

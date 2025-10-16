@@ -1,4 +1,4 @@
-import { TrendingUp, ShoppingCart, TrendingDown, Wallet, LayoutDashboard, Star, Brain } from 'lucide-react'
+import { TrendingUp, ShoppingCart, TrendingDown, Wallet, LayoutDashboard, Star, Brain, Users, Bell, Target } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 
 function Header({ onOpenBuy, onOpenSell, balance }) {
@@ -88,6 +88,48 @@ function Header({ onOpenBuy, onOpenSell, balance }) {
                 <span role="img" aria-label="chat">💬</span>
                 <span>Chat</span>
               </NavLink>
+              <NavLink
+                to="/groups"
+                className={({ isActive }) =>
+                  `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
+                    isActive
+                      ? 'bg-accent-orange text-white'
+                      : 'text-gray-400 hover:text-white hover:bg-dark-700'
+                  }`
+                }
+              >
+                <Users className="w-4 h-4" />
+                <span>Grupos</span>
+              </NavLink>
+
+              <NavLink
+                to="/alerts"
+                className={({ isActive }) =>
+                  `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
+                    isActive
+                      ? 'bg-accent-red text-white'
+                      : 'text-gray-400 hover:text-white hover:bg-dark-700'
+                  }`
+                }
+              >
+                <Bell className="w-4 h-4" />
+                <span>Alertas</span>
+              </NavLink>
+
+              <NavLink
+                to="/funding"
+                className={({ isActive }) =>
+                  `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
+                    isActive
+                      ? 'bg-accent-yellow text-white'
+                      : 'text-gray-400 hover:text-white hover:bg-dark-700'
+                  }`
+                }
+              >
+                <Target className="w-4 h-4" />
+                <span>Fondeos</span>
+              </NavLink>
+
               <NavLink
                 to="/faq"
                 className={({ isActive }) =>
