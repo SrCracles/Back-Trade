@@ -11,7 +11,7 @@ function getInitialHistory() {
 const KEYWORD_RESPONSES = [
   {
     keywords: [/trading/i, /mercado/i, /mercados/i],
-    response: `El trading es la compra y venta de activos financieros para obtener beneficios. En BackTrade puedes operar acciones de EE.UU., Colombia, criptomonedas y divisas (Forex). Un portafolio es el conjunto de activos que posees. Tu balance lo ves arriba a la derecha. Para más detalles, revisa la sección de <a href='/faq' class='text-accent-blue underline'>Preguntas Frecuentes (FAQ)</a>.`
+    response: `El trading es la compra y venta de activos financieros para obtener beneficios. En Trading Sinergico puedes operar acciones de EE.UU., Colombia, criptomonedas y divisas (Forex). Un portafolio es el conjunto de activos que posees. Tu balance lo ves arriba a la derecha. Para más detalles, revisa la sección de <a href='/faq' class='text-accent-blue underline'>Preguntas Frecuentes (FAQ)</a>.`
   },
   {
     keywords: [/operaci[oó]n/i, /comprar/i, /vender/i, /orden de mercado/i, /fuera de horario/i],

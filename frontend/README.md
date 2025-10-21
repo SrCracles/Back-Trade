@@ -1,6 +1,6 @@
-# BackTrade Frontend
+# Trading Sinergico Frontend
 
-Interfaz de usuario para BackTrade construida con React + Vite + TailwindCSS.
+Interfaz de usuario para Trading Sinergico construida con React + Vite + TailwindCSS.
 
 ## Instalación
 

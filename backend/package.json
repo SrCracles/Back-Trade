@@ -1,7 +1,7 @@
 {
-  "name": "backtrade-backend",
+  "name": "tradingSinergico-backend",
   "version": "1.0.0",
-  "description": "Backend API for BackTrade - Trading Analytics Platform",
+  "description": "Backend API for Trading Sinergico - Trading Analytics Platform",
   "main": "api/index.js",
   "type": "module",
   "scripts": {

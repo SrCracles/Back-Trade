@@ -1,6 +1,6 @@
 @echo off
 echo ========================================
-echo  BackTrade - Iniciando Backend
+echo  Trading Sinergico - Iniciando Backend
 echo ========================================
 echo.
 echo El servidor se iniciara en http://localhost:5000
