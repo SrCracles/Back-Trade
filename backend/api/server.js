@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import marketDataRoutes from './routes/marketData.js';
-import searchRoutes from './routes/search.js';
+import marketDataRoutes from '../routes/marketData.js';
+import searchRoutes from '../routes/search.js';
 
 const app = express();
 
