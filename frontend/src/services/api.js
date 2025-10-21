@@ -1,17 +1,17 @@
 import axios from 'axios';
 
-const API_BASE_URL = '/api';
+// Lee la URL base del backend definida en vite.config.js
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const api = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
 });
 
+// --- ENDPOINTS ---
 export const searchSymbols = async (query, market = 'us-stocks') => {
   try {
-    const response = await api.get('/search/symbols', {
-      params: { query, market }
-    });
+    const response = await api.get('/search/symbols', { params: { query, market } });
     return response.data;
   } catch (error) {
     console.error('Search API error:', error);
@@ -32,7 +32,7 @@ export const getQuote = async (symbol) => {
 export const getHistoricalData = async (symbol, timeframe = '1d') => {
   try {
     const response = await api.get(`/market/historical/${symbol}`, {
-      params: { timeframe }
+      params: { timeframe },
     });
     return response.data;
   } catch (error) {
@@ -44,7 +44,7 @@ export const getHistoricalData = async (symbol, timeframe = '1d') => {
 export const getIntradayData = async (symbol, interval = '5min') => {
   try {
     const response = await api.get(`/market/intraday/${symbol}`, {
-      params: { interval }
+      params: { interval },
     });
     return response.data;
   } catch (error) {
@@ -52,4 +52,3 @@ export const getIntradayData = async (symbol, interval = '5min') => {
     throw error;
   }
 };
-

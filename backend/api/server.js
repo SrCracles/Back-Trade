@@ -4,7 +4,6 @@ import marketDataRoutes from './routes/marketData.js';
 import searchRoutes from './routes/search.js';
 
 const app = express();
-const PORT = 5000;
 
 // Middleware
 app.use(cors());
@@ -16,12 +15,8 @@ app.use('/api/search', searchRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'BackTrade API is running' });
+  res.json({ status: 'ok', message: 'Trading Sinergico API is running' });
 });
 
-app.listen(PORT, () => {
-  console.log(`BackTrade API server running on port ${PORT}`);
-  console.log(`Using simulated data (no API keys required)`);
-  console.log(`Ready to go!`);
-});
-
+// 👇 en lugar de app.listen, exporta el handler
+export default app;
