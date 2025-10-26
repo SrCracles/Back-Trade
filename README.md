@@ -44,6 +44,23 @@ http://localhost:3000
 - P&L por posición y total
 - Click en posición para operar
 
+### Reflexión Posterior a la Inversión
+- **Historial de Trades**: Todos tus trades cerrados (ventas parciales o totales)
+- **Análisis Completo del Trade**:
+  - Precios de entrada/salida y duración de la posición
+  - Ganancia/pérdida total con comisiones
+  - Rendimiento porcentual con explicación clara
+  - Ratio riesgo/recompensa
+- **Escenarios Alternativos Automáticos**:
+  - Mantener la posición más tiempo
+  - Stop-loss más estricto o amplio
+  - Take-profit diferente
+  - Tamaño de posición alternativo (50% o 150%)
+  - Salida anticipada
+- **Comparación Visual**: Lado a lado entre tu trade real y los escenarios hipotéticos
+- **Insights Educativos**: Explicaciones sobre cada escenario para aprender de tus decisiones
+- Se genera automáticamente al vender (parcial o total) una posición
+
 ### Seguimiento Psicológico
 - Registro automático de sesiones
 - Pop-ups de evaluación emocional (estrés, confianza, fatiga)
