@@ -1,4 +1,4 @@
-import { TrendingUp, ShoppingCart, TrendingDown, Wallet, LayoutDashboard, Star, Brain, Users, Bell, Target } from 'lucide-react'
+import { TrendingUp, ShoppingCart, TrendingDown, Wallet, LayoutDashboard, Star, Brain, Users, Bell, Target, BarChart3 } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 
 function Header({ onOpenBuy, onOpenSell, balance }) {
@@ -62,6 +62,20 @@ function Header({ onOpenBuy, onOpenSell, balance }) {
               </NavLink>
 
               <NavLink
+                to="/trades"
+                className={({ isActive }) =>
+                  `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
+                    isActive
+                      ? 'bg-accent-purple text-white'
+                      : 'text-gray-400 hover:text-white hover:bg-dark-700'
+                  }`
+                }
+              >
+                <BarChart3 className="w-4 h-4" />
+                <span>Trades</span>
+              </NavLink>
+
+              <NavLink
                 to="/report"
                 className={({ isActive }) =>
                   `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
@@ -75,19 +89,6 @@ function Header({ onOpenBuy, onOpenSell, balance }) {
                 <span>Informe</span>
               </NavLink>
 
-              <NavLink
-                to="/chat"
-                className={({ isActive }) =>
-                  `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
-                    isActive
-                      ? 'bg-accent-green text-white'
-                      : 'text-gray-400 hover:text-white hover:bg-dark-700'
-                  }`
-                }
-              >
-                <span role="img" aria-label="chat">💬</span>
-                <span>Chat</span>
-              </NavLink>
               <NavLink
                 to="/groups"
                 className={({ isActive }) =>
@@ -128,20 +129,6 @@ function Header({ onOpenBuy, onOpenSell, balance }) {
               >
                 <Target className="w-4 h-4" />
                 <span>Fondeos</span>
-              </NavLink>
-
-              <NavLink
-                to="/faq"
-                className={({ isActive }) =>
-                  `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
-                    isActive
-                      ? 'bg-accent-purple text-white'
-                      : 'text-gray-400 hover:text-white hover:bg-dark-700'
-                  }`
-                }
-              >
-                <span role="img" aria-label="faq">❓</span>
-                <span>FAQ</span>
               </NavLink>
             </nav>
           </div>

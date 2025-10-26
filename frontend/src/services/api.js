@@ -53,3 +53,60 @@ export const getIntradayData = async (symbol, interval = '5min') => {
   }
 };
 
+// Trade Analysis API calls
+export const analyzeTradeAPI = async (trade) => {
+  try {
+    const response = await api.post('/trade-analysis/analyze', trade);
+    return response.data;
+  } catch (error) {
+    console.error('Trade analysis API error:', error);
+    throw error;
+  }
+};
+
+export const generateScenariosAPI = async (trade) => {
+  try {
+    const response = await api.post('/trade-analysis/scenarios', trade);
+    return response.data;
+  } catch (error) {
+    console.error('Scenarios generation API error:', error);
+    throw error;
+  }
+};
+
+export const compareWithHistoricalAPI = async (trade, historicalStats = null) => {
+  try {
+    const response = await api.post('/trade-analysis/compare', {
+      trade,
+      historicalStats
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Historical comparison API error:', error);
+    throw error;
+  }
+};
+
+export const fullTradeAnalysisAPI = async (trade, historicalStats = null) => {
+  try {
+    const response = await api.post('/trade-analysis/full', {
+      trade,
+      historicalStats
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Full trade analysis API error:', error);
+    throw error;
+  }
+};
+
+export const batchTradeAnalysisAPI = async (trades) => {
+  try {
+    const response = await api.post('/trade-analysis/batch', { trades });
+    return response.data;
+  } catch (error) {
+    console.error('Batch trade analysis API error:', error);
+    throw error;
+  }
+};
+
