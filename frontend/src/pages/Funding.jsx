@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Target, DollarSign, Trophy, Clock, CheckCircle, AlertCircle, Star, TrendingUp, Shield, Zap } from 'lucide-react'
+import { Target, DollarSign, Trophy, Clock, CheckCircle, AlertCircle, Star, TrendingUp, Shield, Zap, Calendar, TrendingDown, Activity } from 'lucide-react'
 
 const FUNDING_PLANS = [
   {
@@ -153,6 +153,90 @@ const EXAMPLE_RESTRICTIONS = [
   }
 ]
 
+// Datos de ejemplo para metas mensuales y semanales
+const MONTHLY_GOALS = [
+  {
+    id: 1,
+    name: 'Ganancia Mensual',
+    target: 8,
+    current: 5.2,
+    unit: '%',
+    type: 'profit',
+    icon: TrendingUp,
+    color: 'green'
+  },
+  {
+    id: 2,
+    name: 'Días de Trading',
+    target: 12,
+    current: 8,
+    unit: 'días',
+    type: 'activity',
+    icon: Calendar,
+    color: 'blue'
+  },
+  {
+    id: 3,
+    name: 'Drawdown Máximo',
+    target: 6,
+    current: 3.2,
+    unit: '%',
+    type: 'risk',
+    icon: TrendingDown,
+    color: 'red',
+    isReverse: true // Menor es mejor
+  },
+  {
+    id: 4,
+    name: 'Operaciones Realizadas',
+    target: 30,
+    current: 18,
+    unit: 'ops',
+    type: 'activity',
+    icon: Activity,
+    color: 'purple'
+  }
+]
+
+const WEEKLY_GOALS = [
+  {
+    week: 1,
+    label: 'Semana 1',
+    goals: [
+      { name: 'Ganancia Semanal', target: 2, current: 1.8, unit: '%', type: 'profit', color: 'green' },
+      { name: 'Días Activos', target: 3, current: 3, unit: 'días', type: 'activity', color: 'blue' },
+      { name: 'Operaciones', target: 8, current: 7, unit: 'ops', type: 'activity', color: 'purple' }
+    ]
+  },
+  {
+    week: 2,
+    label: 'Semana 2',
+    goals: [
+      { name: 'Ganancia Semanal', target: 2.5, current: 2.1, unit: '%', type: 'profit', color: 'green' },
+      { name: 'Días Activos', target: 3, current: 2, unit: 'días', type: 'activity', color: 'blue' },
+      { name: 'Operaciones', target: 10, current: 6, unit: 'ops', type: 'activity', color: 'purple' }
+    ]
+  },
+  {
+    week: 3,
+    label: 'Semana 3',
+    goals: [
+      { name: 'Ganancia Semanal', target: 2, current: 1.3, unit: '%', type: 'profit', color: 'green' },
+      { name: 'Días Activos', target: 3, current: 3, unit: 'días', type: 'activity', color: 'blue' },
+      { name: 'Operaciones', target: 8, current: 5, unit: 'ops', type: 'activity', color: 'purple' }
+    ]
+  },
+  {
+    week: 4,
+    label: 'Semana 4',
+    goals: [
+      { name: 'Ganancia Semanal', target: 1.5, current: 0, unit: '%', type: 'profit', color: 'green' },
+      { name: 'Días Activos', target: 3, current: 0, unit: 'días', type: 'activity', color: 'blue' },
+      { name: 'Operaciones', target: 4, current: 0, unit: 'ops', type: 'activity', color: 'purple' }
+    ]
+  }
+]
+
 function Funding() {
   const [selectedPlan, setSelectedPlan] = useState(null)
   const [showPurchase, setShowPurchase] = useState(false)
@@ -226,10 +310,10 @@ function Funding() {
         </div>
 
         {/* Tabs */}
-        <div className="flex space-x-1 mb-8">
+        <div className="flex space-x-1 mb-8 overflow-x-auto">
           <button
             onClick={() => setActiveTab('plans')}
-            className={`px-6 py-3 rounded-lg font-medium transition-colors ${
+            className={`px-6 py-3 rounded-lg font-medium transition-colors whitespace-nowrap ${
               activeTab === 'plans'
                 ? 'bg-accent-blue text-white'
                 : 'bg-dark-800 text-gray-400 hover:text-white hover:bg-dark-700'
@@ -238,8 +322,18 @@ function Funding() {
             Planes de Fondeo
           </button>
           <button
+            onClick={() => setActiveTab('tracking')}
+            className={`px-6 py-3 rounded-lg font-medium transition-colors whitespace-nowrap ${
+              activeTab === 'tracking'
+                ? 'bg-accent-blue text-white'
+                : 'bg-dark-800 text-gray-400 hover:text-white hover:bg-dark-700'
+            }`}
+          >
+            Seguimiento
+          </button>
+          <button
             onClick={() => setActiveTab('objectives')}
-            className={`px-6 py-3 rounded-lg font-medium transition-colors ${
+            className={`px-6 py-3 rounded-lg font-medium transition-colors whitespace-nowrap ${
               activeTab === 'objectives'
                 ? 'bg-accent-blue text-white'
                 : 'bg-dark-800 text-gray-400 hover:text-white hover:bg-dark-700'
@@ -249,7 +343,7 @@ function Funding() {
           </button>
           <button
             onClick={() => setActiveTab('restrictions')}
-            className={`px-6 py-3 rounded-lg font-medium transition-colors ${
+            className={`px-6 py-3 rounded-lg font-medium transition-colors whitespace-nowrap ${
               activeTab === 'restrictions'
                 ? 'bg-accent-blue text-white'
                 : 'bg-dark-800 text-gray-400 hover:text-white hover:bg-dark-700'
@@ -338,6 +432,278 @@ function Funding() {
             ))}
           </div>
         )}
+
+        {/* Tracking Tab */}
+        {activeTab === 'tracking' && (() => {
+          // Progress Circle Component
+          const ProgressCircle = ({ percentage, size = 120, strokeWidth = 8, color = 'blue' }) => {
+            const radius = (size - strokeWidth) / 2
+            const circumference = radius * 2 * Math.PI
+            const offset = circumference - (percentage / 100) * circumference
+            
+            const colorClasses = {
+              'green': 'stroke-accent-green',
+              'blue': 'stroke-accent-blue',
+              'purple': 'stroke-accent-purple',
+              'red': 'stroke-accent-red',
+              'yellow': 'stroke-accent-yellow',
+              'orange': 'stroke-accent-orange'
+            }
+
+            return (
+              <div className="relative inline-flex items-center justify-center">
+                <svg width={size} height={size} className="transform -rotate-90">
+                  <circle
+                    cx={size / 2}
+                    cy={size / 2}
+                    r={radius}
+                    stroke="currentColor"
+                    strokeWidth={strokeWidth}
+                    fill="none"
+                    className="text-dark-600"
+                  />
+                  <circle
+                    cx={size / 2}
+                    cy={size / 2}
+                    r={radius}
+                    stroke="currentColor"
+                    strokeWidth={strokeWidth}
+                    fill="none"
+                    strokeDasharray={circumference}
+                    strokeDashoffset={offset}
+                    strokeLinecap="round"
+                    className={`${colorClasses[color] || colorClasses.blue} transition-all duration-500`}
+                  />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-2xl font-bold text-white">
+                    {percentage.toFixed(0)}%
+                  </span>
+                </div>
+              </div>
+            )
+          }
+
+          // Progress Bar Component
+          const ProgressBar = ({ percentage, color = 'blue', label, current, target, unit, isReverse = false }) => {
+            const colorClasses = {
+              'green': 'bg-accent-green',
+              'blue': 'bg-accent-blue',
+              'purple': 'bg-accent-purple',
+              'red': 'bg-accent-red',
+              'yellow': 'bg-accent-yellow',
+              'orange': 'bg-accent-orange'
+            }
+
+            const displayPercentage = isReverse ? Math.max(0, 100 - (current / target) * 100) : (current / target) * 100
+            const statusColor = displayPercentage >= 100 ? 'text-accent-green' : displayPercentage >= 75 ? 'text-accent-yellow' : 'text-accent-red'
+
+            return (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-300 font-medium text-sm">{label}</span>
+                  <span className={`font-semibold ${statusColor}`}>
+                    {current.toFixed(1)}{unit} / {target}{unit}
+                  </span>
+                </div>
+                <div className="w-full bg-dark-700 rounded-full h-3 overflow-hidden">
+                  <div
+                    className={`h-full ${colorClasses[color] || colorClasses.blue} transition-all duration-500 rounded-full`}
+                    style={{ width: `${Math.min(100, displayPercentage)}%` }}
+                  />
+                </div>
+                <div className="flex items-center justify-between text-xs text-gray-400">
+                  <span>Progreso: {displayPercentage.toFixed(1)}%</span>
+                  {displayPercentage >= 100 && (
+                    <span className="text-accent-green flex items-center">
+                      <CheckCircle className="w-3 h-3 mr-1" />
+                      Completado
+                    </span>
+                  )}
+                </div>
+              </div>
+            )
+          }
+
+          return (
+            <div className="space-y-8">
+              {/* Monthly Goals Section */}
+              <div className="bg-dark-800 border border-dark-600 rounded-xl p-6">
+                <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
+                  <Calendar className="w-7 h-7 text-accent-blue mr-3" />
+                  Metas Mensuales Fijas
+                </h2>
+                <p className="text-gray-400 mb-6 text-sm">
+                  Objetivos que debes cumplir durante todo el mes. El progreso se actualiza automáticamente según tus operaciones.
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {MONTHLY_GOALS.map((goal) => {
+                    const IconComponent = goal.icon
+                    const percentage = goal.isReverse 
+                      ? Math.max(0, 100 - (goal.current / goal.target) * 100)
+                      : (goal.current / goal.target) * 100
+                    
+                    const colorClasses = {
+                      'green': 'text-accent-green',
+                      'blue': 'text-accent-blue',
+                      'purple': 'text-accent-purple',
+                      'red': 'text-accent-red',
+                      'yellow': 'text-accent-yellow',
+                      'orange': 'text-accent-orange'
+                    }
+
+                    return (
+                      <div key={goal.id} className="bg-dark-700 rounded-lg p-6 border border-dark-600">
+                        <div className="flex flex-col items-center text-center mb-4">
+                          <div className={`mb-3 ${colorClasses[goal.color]}`}>
+                            <IconComponent className="w-8 h-8" />
+                          </div>
+                          <h3 className="text-lg font-semibold text-white mb-2">{goal.name}</h3>
+                          <ProgressCircle 
+                            percentage={Math.min(100, percentage)} 
+                            color={goal.color}
+                            size={100}
+                          />
+                        </div>
+                        <div className="mt-4 pt-4 border-t border-dark-600">
+                          <ProgressBar
+                            percentage={percentage}
+                            color={goal.color}
+                            label={goal.name}
+                            current={goal.current}
+                            target={goal.target}
+                            unit={goal.unit}
+                            isReverse={goal.isReverse}
+                          />
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* Weekly Goals Section */}
+              <div className="bg-dark-800 border border-dark-600 rounded-xl p-6">
+                <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
+                  <Clock className="w-7 h-7 text-accent-purple mr-3" />
+                  Metas Semanales Variables
+                </h2>
+                <p className="text-gray-400 mb-6 text-sm">
+                  Objetivos específicos para cada semana. Cada semana tiene metas adaptadas según tu progreso mensual.
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {WEEKLY_GOALS.map((week) => {
+                    const isCurrentWeek = week.week === 3 // Ejemplo: semana 3 es la actual
+                    const isPastWeek = week.week < 3
+                    const isFutureWeek = week.week > 3
+
+                    return (
+                      <div
+                        key={week.week}
+                        className={`bg-dark-700 rounded-lg p-6 border-2 ${
+                          isCurrentWeek
+                            ? 'border-accent-blue'
+                            : isPastWeek
+                            ? 'border-dark-600 opacity-75'
+                            : 'border-dark-600 opacity-50'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-4">
+                          <h3 className="text-xl font-bold text-white">{week.label}</h3>
+                          <div className="flex items-center space-x-2">
+                            {isCurrentWeek && (
+                              <span className="px-2 py-1 bg-accent-blue/20 text-accent-blue text-xs font-semibold rounded">
+                                Actual
+                              </span>
+                            )}
+                            {isPastWeek && week.goals.every(g => (g.current / g.target) >= 1) && (
+                              <CheckCircle className="w-5 h-5 text-accent-green" />
+                            )}
+                            {isFutureWeek && (
+                              <span className="px-2 py-1 bg-dark-600 text-gray-400 text-xs font-semibold rounded">
+                                Próxima
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="space-y-4">
+                          {week.goals.map((goal, idx) => {
+                            const percentage = (goal.current / goal.target) * 100
+                            return (
+                              <div key={idx}>
+                                <ProgressBar
+                                  percentage={percentage}
+                                  color={goal.color}
+                                  label={goal.name}
+                                  current={goal.current}
+                                  target={goal.target}
+                                  unit={goal.unit}
+                                />
+                              </div>
+                            )
+                          })}
+                        </div>
+
+                        {/* Week Summary */}
+                        <div className="mt-4 pt-4 border-t border-dark-600">
+                          <div className="flex items-center justify-between">
+                            <span className="text-gray-400 text-sm">Progreso Semanal</span>
+                            <span className="text-white font-semibold">
+                              {Math.round(
+                                week.goals.reduce((sum, g) => sum + (g.current / g.target) * 100, 0) / week.goals.length
+                              )}%
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* Overall Progress Summary */}
+              <div className="bg-gradient-to-br from-accent-blue/10 to-accent-purple/10 border border-accent-blue/30 rounded-xl p-6">
+                <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+                  <Trophy className="w-6 h-6 text-accent-yellow mr-2" />
+                  Resumen General del Mes
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-dark-800/50 rounded-lg p-4">
+                    <div className="text-gray-400 text-sm mb-1">Progreso Mensual Promedio</div>
+                    <div className="text-3xl font-bold text-white">
+                      {Math.round(
+                        MONTHLY_GOALS.reduce((sum, g) => {
+                          const pct = g.isReverse 
+                            ? Math.max(0, 100 - (g.current / g.target) * 100)
+                            : (g.current / g.target) * 100
+                          return sum + Math.min(100, pct)
+                        }, 0) / MONTHLY_GOALS.length
+                      )}%
+                    </div>
+                  </div>
+                  <div className="bg-dark-800/50 rounded-lg p-4">
+                    <div className="text-gray-400 text-sm mb-1">Días Restantes</div>
+                    <div className="text-3xl font-bold text-white">12 días</div>
+                  </div>
+                  <div className="bg-dark-800/50 rounded-lg p-4">
+                    <div className="text-gray-400 text-sm mb-1">Metas Completadas</div>
+                    <div className="text-3xl font-bold text-accent-green">
+                      {MONTHLY_GOALS.filter(g => {
+                        const pct = g.isReverse 
+                          ? Math.max(0, 100 - (g.current / g.target) * 100)
+                          : (g.current / g.target) * 100
+                        return pct >= 100
+                      }).length} / {MONTHLY_GOALS.length}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )
+        })()}
 
         {/* Restrictions Tab */}
         {activeTab === 'restrictions' && (
