@@ -1,6 +1,6 @@
 @echo off
 echo ========================================
-echo  BackTrade - Instalacion Automatica
+echo  Trading Sinergico - Instalacion Automatica
 echo ========================================
 echo.
 

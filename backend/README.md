@@ -1,6 +1,6 @@
-# BackTrade Backend
+# Trading Sinergico Backend
 
-Backend API con datos simulados para la plataforma BackTrade.
+Backend API con datos simulados para la plataforma Trading Sinergico.
 
 ## Instalación
 
