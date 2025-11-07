@@ -110,3 +110,74 @@ export const batchTradeAnalysisAPI = async (trades) => {
   }
 };
 
+// Alerts API calls
+export const getAlertsAPI = async (filters = {}) => {
+  try {
+    const response = await api.get('/alerts', { params: filters });
+    return response.data;
+  } catch (error) {
+    console.error('Get alerts API error:', error);
+    throw error;
+  }
+};
+
+export const getAlertByIdAPI = async (id) => {
+  try {
+    const response = await api.get(`/alerts/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Get alert API error:', error);
+    throw error;
+  }
+};
+
+export const createAlertAPI = async (alertData) => {
+  try {
+    const response = await api.post('/alerts', alertData);
+    return response.data;
+  } catch (error) {
+    console.error('Create alert API error:', error);
+    throw error;
+  }
+};
+
+export const updateAlertAPI = async (id, updates) => {
+  try {
+    const response = await api.put(`/alerts/${id}`, updates);
+    return response.data;
+  } catch (error) {
+    console.error('Update alert API error:', error);
+    throw error;
+  }
+};
+
+export const deleteAlertAPI = async (id) => {
+  try {
+    const response = await api.delete(`/alerts/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Delete alert API error:', error);
+    throw error;
+  }
+};
+
+export const triggerAlertAPI = async (id) => {
+  try {
+    const response = await api.post(`/alerts/${id}/trigger`);
+    return response.data;
+  } catch (error) {
+    console.error('Trigger alert API error:', error);
+    throw error;
+  }
+};
+
+export const resetAlertAPI = async (id) => {
+  try {
+    const response = await api.post(`/alerts/${id}/reset`);
+    return response.data;
+  } catch (error) {
+    console.error('Reset alert API error:', error);
+    throw error;
+  }
+};
+

@@ -3,6 +3,7 @@ import cors from 'cors';
 import marketDataRoutes from './routes/marketData.js';
 import searchRoutes from './routes/search.js';
 import tradeAnalysisRoutes from './routes/tradeAnalysis.js';
+import alertRoutes from './routes/alerts.js';
 
 const app = express();
 const PORT = 5000;
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use('/api/market', marketDataRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/trade-analysis', tradeAnalysisRoutes);
+app.use('/api/alerts', alertRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
