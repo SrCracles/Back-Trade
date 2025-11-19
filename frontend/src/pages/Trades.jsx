@@ -6,6 +6,7 @@ import TradeAnalysis from '../components/TradeAnalysis';
 function Trades({ closedTrades = [] }) {
   const [trades, setTrades] = useState(closedTrades);
   
+  
   // Actualizar cuando cambien los trades cerrados
   useEffect(() => {
     setTrades(closedTrades);
