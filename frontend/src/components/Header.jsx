@@ -9,6 +9,7 @@ function Header({ onOpenBuy, onOpenSell, balance }) {
     { to: '/', icon: LayoutDashboard, label: 'Trading', activeClass: 'bg-accent-blue' },
     { to: '/watchlist', icon: Star, label: 'Seguimiento', activeClass: 'bg-accent-blue' },
     { to: '/portfolio', icon: Wallet, label: 'Portafolio', activeClass: 'bg-accent-blue' },
+    { to: '/trades', icon: BarChart3, label: 'Trades', activeClass: 'bg-accent-purple' },
     { to: '/report', icon: Brain, label: 'Informe', activeClass: 'bg-accent-purple' },
     { to: '/chat', icon: null, label: 'Chat', emoji: '💬', activeClass: 'bg-accent-green' },
     { to: '/groups', icon: Users, label: 'Grupos', activeClass: 'bg-accent-orange' },
